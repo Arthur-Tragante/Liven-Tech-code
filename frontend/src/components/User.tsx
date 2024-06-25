@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import './User.css';
 
 interface UserProps {
@@ -201,6 +202,11 @@ const User: React.FC<UserProps> = ({ token }) => {
     }
   };
 
+  const handleLogout = () => {
+    Cookies.remove('token');
+    window.location.href = '/login';
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -272,6 +278,7 @@ const User: React.FC<UserProps> = ({ token }) => {
           </form>
         </div>
       )}
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
     </div>
   );
 };
