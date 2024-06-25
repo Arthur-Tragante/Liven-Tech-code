@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './User.css';
 
 interface UserProps {
   token: string;
@@ -34,6 +35,7 @@ const User: React.FC<UserProps> = ({ token }) => {
   const [complement, setComplement] = useState<string>('');
   const [state, setState] = useState<string>('');
   const [zipcode, setZipcode] = useState<string>('');
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -114,6 +116,7 @@ const User: React.FC<UserProps> = ({ token }) => {
     setComplement(address.complement);
     setState(address.state);
     setZipcode(address.zipcode);
+    setIsFormVisible(true);
   };
 
   const handleUpdateAddress = async (e: React.FormEvent) => {
@@ -147,6 +150,7 @@ const User: React.FC<UserProps> = ({ token }) => {
       setComplement('');
       setState('');
       setZipcode('');
+      setIsFormVisible(false);
       alert('Address updated successfully');
     } catch (error) {
       console.error(error);
@@ -159,7 +163,7 @@ const User: React.FC<UserProps> = ({ token }) => {
   }
 
   return (
-    <div>
+    <div className="user-container">
       <h2>User Details</h2>
       <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
@@ -168,44 +172,53 @@ const User: React.FC<UserProps> = ({ token }) => {
         {user.addresses && user.addresses.map((address) => (
           <li key={address.address_id}>
             {address.street}, {address.number}, {address.complement}, {address.city}, {address.state}, {address.zipcode}, {address.country}
-            <button onClick={() => handleEditAddress(address)}>Edit</button>
-            <button onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
+            <div className="address-buttons">
+              <button onClick={() => handleEditAddress(address)}>Edit</button>
+              <button onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
+            </div>
           </li>
         ))}
       </ul>
-      <h3>{selectedAddress ? 'Update Address' : 'Add Address'}</h3>
-      <form onSubmit={selectedAddress ? handleUpdateAddress : handleAddAddress}>
+      <button onClick={() => setIsFormVisible(!isFormVisible)}>
+        {isFormVisible ? 'Cancel' : 'Add New Address'}
+      </button>
+      {isFormVisible && (
         <div>
-          <label>Street:</label>
-          <input type="text" value={street} onChange={(e) => setStreet(e.target.value)} />
+          <h3>{selectedAddress ? 'Update Address' : 'Add Address'}</h3>
+          <form onSubmit={selectedAddress ? handleUpdateAddress : handleAddAddress}>
+            <div>
+              <label>Street:</label>
+              <input type="text" value={street} onChange={(e) => setStreet(e.target.value)} />
+            </div>
+            <div>
+              <label>Number:</label>
+              <input type="text" value={number} onChange={(e) => setNumber(e.target.value)} />
+            </div>
+            <div>
+              <label>Complement:</label>
+              <input type="text" value={complement} onChange={(e) => setComplement(e.target.value)} />
+            </div>
+            <div>
+              <label>City:</label>
+              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+            </div>
+            <div>
+              <label>State:</label>
+              <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
+            </div>
+            <div>
+              <label>Zipcode:</label>
+              <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+            </div>
+            <div>
+              <label>Country:</label>
+              <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
+            </div>
+            <button type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
+            {selectedAddress && <button onClick={() => setSelectedAddress(null)}>Cancel</button>}
+          </form>
         </div>
-        <div>
-          <label>Number:</label>
-          <input type="text" value={number} onChange={(e) => setNumber(e.target.value)} />
-        </div>
-        <div>
-          <label>Complement:</label>
-          <input type="text" value={complement} onChange={(e) => setComplement(e.target.value)} />
-        </div>
-        <div>
-          <label>City:</label>
-          <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
-        </div>
-        <div>
-          <label>State:</label>
-          <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
-        </div>
-        <div>
-          <label>Zipcode:</label>
-          <input type="text" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
-        </div>
-        <div>
-          <label>Country:</label>
-          <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
-        </div>
-        <button type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
-        {selectedAddress && <button onClick={() => setSelectedAddress(null)}>Cancel</button>}
-      </form>
+      )}
     </div>
   );
 };
