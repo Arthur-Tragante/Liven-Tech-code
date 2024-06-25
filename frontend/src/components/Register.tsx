@@ -8,6 +8,10 @@ const Register: React.FC = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (name === "" || email === "" || password === "") {
+      alert("Name, Email and password must not be empty");
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8080/register', {
         name,
