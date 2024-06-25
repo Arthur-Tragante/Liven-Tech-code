@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>My App</h1>
+      <h1>User Address Control</h1>
       {!token ? (
         <>
           <Login setToken={setToken} onRegisterClick={handleShowRegister} />

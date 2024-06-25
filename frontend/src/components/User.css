@@ -29,7 +29,7 @@
     justify-content: flex-end;
   }
   
-  button {
+  .edit-button, .delete-button, .toggle-form-button, .submit-button, .cancel-button {
     background: #007BFF;
     color: #fff;
     border: none;
@@ -40,7 +40,7 @@
     margin-left: 10px;
   }
   
-  button:hover {
+  .edit-button:hover, .delete-button:hover, .toggle-form-button:hover, .submit-button:hover, .cancel-button:hover {
     background: #0056b3;
   }
   

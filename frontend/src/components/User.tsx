@@ -173,13 +173,13 @@ const User: React.FC<UserProps> = ({ token }) => {
           <li key={address.address_id}>
             {address.street}, {address.number}, {address.complement}, {address.city}, {address.state}, {address.zipcode}, {address.country}
             <div className="address-buttons">
-              <button onClick={() => handleEditAddress(address)}>Edit</button>
-              <button onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
+              <button className="edit-button" onClick={() => handleEditAddress(address)}>Edit</button>
+              <button className="delete-button" onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
             </div>
           </li>
         ))}
       </ul>
-      <button onClick={() => setIsFormVisible(!isFormVisible)}>
+      <button className="toggle-form-button" onClick={() => setIsFormVisible(!isFormVisible)}>
         {isFormVisible ? 'Cancel' : 'Add New Address'}
       </button>
       {isFormVisible && (
@@ -214,8 +214,8 @@ const User: React.FC<UserProps> = ({ token }) => {
               <label>Country:</label>
               <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
             </div>
-            <button type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
-            {selectedAddress && <button onClick={() => setSelectedAddress(null)}>Cancel</button>}
+            <button className="submit-button" type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
+            {selectedAddress && <button className="cancel-button" onClick={() => setSelectedAddress(null)}>Cancel</button>}
           </form>
         </div>
       )}
