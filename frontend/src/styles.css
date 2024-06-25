@@ -60,10 +60,6 @@ body {
     background: #0056b3;
   }
   
-  button + button {
-    margin-left: 10px;
-  }
-  
   .register-toggle {
     margin-top: 10px;
     color: #007BFF;

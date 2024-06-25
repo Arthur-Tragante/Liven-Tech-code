@@ -29,7 +29,13 @@
     justify-content: flex-end;
   }
   
-  .edit-button, .delete-button, .toggle-form-button, .submit-button, .cancel-button {
+  .update-user-button,
+  .delete-user-button,
+  .edit-address-button,
+  .delete-address-button,
+  .toggle-form-button,
+  .submit-address-button,
+  .cancel-edit-button {
     background: #007BFF;
     color: #fff;
     border: none;
@@ -37,10 +43,15 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-left: 10px;
   }
   
-  .edit-button:hover, .delete-button:hover, .toggle-form-button:hover, .submit-button:hover, .cancel-button:hover {
+  .update-user-button:hover,
+  .delete-user-button:hover,
+  .edit-address-button:hover,
+  .delete-address-button:hover,
+  .toggle-form-button:hover,
+  .submit-address-button:hover,
+  .cancel-edit-button:hover {
     background: #0056b3;
   }
   
@@ -58,7 +69,8 @@
     color: #333;
   }
   
-  input[type="text"] {
+  input[type="text"],
+  input[type="email"] {
     width: calc(100% - 10px);
     padding: 10px;
     border: 1px solid #ddd;
@@ -66,7 +78,8 @@
     box-sizing: border-box;
   }
   
-  button[type="submit"], button[type="button"] {
+  button[type="submit"],
+  button[type="button"] {
     width: 100%;
     margin-top: 10px;
   }
