@@ -28,6 +28,8 @@ interface User {
 const User: React.FC<UserProps> = ({ token }) => {
   const [user, setUser] = useState<User | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [country, setCountry] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [street, setStreet] = useState<string>('');
@@ -46,6 +48,8 @@ const User: React.FC<UserProps> = ({ token }) => {
           },
         });
         setUser(response.data);
+        setName(response.data.name);
+        setEmail(response.data.email);
       } catch (error) {
         console.error(error);
         alert('Failed to fetch user data');
@@ -158,6 +162,45 @@ const User: React.FC<UserProps> = ({ token }) => {
     }
   };
 
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        'http://localhost:8080/user',
+        { name, email },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUser((prevUser) => {
+        if (prevUser) {
+          return { ...prevUser, name: response.data.name, email: response.data.email };
+        }
+        return prevUser;
+      });
+      alert('User updated successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to update user');
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await axios.delete('http://localhost:8080/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert('User deleted successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to delete user');
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -165,16 +208,26 @@ const User: React.FC<UserProps> = ({ token }) => {
   return (
     <div className="user-container">
       <h2>User Details</h2>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
+      <form onSubmit={handleUpdateUser}>
+        <div>
+          <label>Name:</label>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <button className="update-user-button" type="submit">Update User</button>
+        <button className="delete-user-button" type="button" onClick={handleDeleteUser}>Delete User</button>
+      </form>
       <h3>Addresses</h3>
       <ul>
         {user.addresses && user.addresses.map((address) => (
           <li key={address.address_id}>
             {address.street}, {address.number}, {address.complement}, {address.city}, {address.state}, {address.zipcode}, {address.country}
             <div className="address-buttons">
-              <button className="edit-button" onClick={() => handleEditAddress(address)}>Edit</button>
-              <button className="delete-button" onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
+              <button className="edit-address-button" onClick={() => handleEditAddress(address)}>Edit</button>
+              <button className="delete-address-button" onClick={() => handleDeleteAddress(address.address_id)}>Delete</button>
             </div>
           </li>
         ))}
@@ -214,8 +267,8 @@ const User: React.FC<UserProps> = ({ token }) => {
               <label>Country:</label>
               <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
             </div>
-            <button className="submit-button" type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
-            {selectedAddress && <button className="cancel-button" onClick={() => setSelectedAddress(null)}>Cancel</button>}
+            <button className="submit-address-button" type="submit">{selectedAddress ? 'Update Address' : 'Add Address'}</button>
+            {selectedAddress && <button className="cancel-edit-button" type="button" onClick={() => setSelectedAddress(null)}>Cancel</button>}
           </form>
         </div>
       )}
