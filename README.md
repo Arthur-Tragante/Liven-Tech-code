@@ -54,6 +54,10 @@ Navigate to the frontend folder:
 ```
 cd frontend
 ```
+create an .env file with the following content (if you change the back end port, change here as well)
+```
+REACT_APP_API_URL=http://localhost:8080
+```
 Install the required dependencies:
 ```
 npm install

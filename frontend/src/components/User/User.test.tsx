@@ -8,7 +8,7 @@ import User from './User';
 
 describe('User component', () => {
   let mock: MockAdapter;
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const mockUserData = {
     ID: 1,
     DeletedAt: null,
@@ -34,7 +34,7 @@ describe('User component', () => {
     Cookies.get = jest.fn();
     Cookies.remove = jest.fn();
     global.alert = jest.fn();
-    mock.onGet('http://localhost:8080/user').reply(200, mockUserData);
+    mock.onGet(apiUrl + '/user').reply(200, mockUserData);
   });
 
   afterEach(() => {
@@ -69,7 +69,7 @@ describe('User component', () => {
     fireEvent.change(screen.getByLabelText(/zipcode/i), { target: { value: 'New Zipcode' } });
     fireEvent.change(screen.getByLabelText(/country/i), { target: { value: 'New Country' } });
 
-    mock.onPost('http://localhost:8080/user/address').reply(200, {
+    mock.onPost(apiUrl + '/user/address').reply(200, {
       address_id: 2,
       country: 'New Country',
       city: 'New City',
@@ -93,7 +93,7 @@ describe('User component', () => {
       render(<User token="test-token" />);
     });
 
-    mock.onDelete('http://localhost:8080/user/address/1').reply(200);
+    mock.onDelete(apiUrl + '/user/address/1').reply(200);
 
     fireEvent.click(screen.getAllByText(/delete/i)[1]);
 
@@ -111,7 +111,7 @@ describe('User component', () => {
     fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Jane Doe' } });
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'jane@example.com' } });
 
-    mock.onPut('http://localhost:8080/user').reply(200, {
+    mock.onPut(apiUrl + '/user').reply(200, {
       ID: 1,
       DeletedAt: null,
       name: 'Jane Doe',

@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, fireEvent, screen, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import Register from './Register';
 
 describe('Register component', () => {
   let mock: MockAdapter;
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   beforeEach(() => {
     mock = new MockAdapter(axios);
     global.alert = jest.fn();
@@ -18,7 +19,7 @@ describe('Register component', () => {
   });
 
   it('allows the user to register successfully', async () => {
-    mock.onPost('http://localhost:8080/register').reply(200, { message: 'Registration successful' });
+    mock.onPost(apiUrl + '/register').reply(200, { message: 'Registration successful' });
 
     await act(async () => {
       render(<Register />);
@@ -35,7 +36,7 @@ describe('Register component', () => {
   });
 
   it('shows an error message on registration failure', async () => {
-    mock.onPost('http://localhost:8080/register').reply(500, { message: 'Registration failed' });
+    mock.onPost(apiUrl + '/register').reply(500, { message: 'Registration failed' });
 
     await act(async () => {
       render(<Register />);

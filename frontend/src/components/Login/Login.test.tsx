@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, fireEvent, screen, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import Login from './Login';
 
 describe('Login component', () => {
   let mock: MockAdapter;
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   beforeEach(() => {
     mock = new MockAdapter(axios);
     global.alert = jest.fn();
@@ -21,7 +22,7 @@ describe('Login component', () => {
     const setToken = jest.fn();
     const onRegisterClick = jest.fn();
 
-    mock.onPost('http://localhost:8080/login').reply(200, { token: 'test-token' });
+    mock.onPost(apiUrl + '/login').reply(200, { token: 'test-token' });
 
     await act(async () => {
       render(<Login setToken={setToken} onRegisterClick={onRegisterClick} />);
@@ -40,7 +41,7 @@ describe('Login component', () => {
     const setToken = jest.fn();
     const onRegisterClick = jest.fn();
 
-    mock.onPost('http://localhost:8080/login').reply(401, { message: 'Invalid credentials' });
+    mock.onPost(apiUrl + '/login').reply(401, { message: 'Invalid credentials' });
 
     await act(async () => {
       render(<Login setToken={setToken} onRegisterClick={onRegisterClick} />);

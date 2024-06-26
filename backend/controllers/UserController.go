@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/arthur-tragante/liven-code-test/models"
@@ -19,8 +18,6 @@ func (ctrl *UserController) RegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	fmt.Printf("RegisterUser received: %+v\n", user)
 
 	if err := ctrl.UserService.Register(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -40,8 +37,6 @@ func (ctrl *UserController) LoginUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	fmt.Printf("LoginUser received: %+v\n", loginData)
 
 	token, err := ctrl.UserService.Login(loginData.Email, loginData.Password)
 	if err != nil {
