@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import Register from './components/Register';
-import Login from './components/Login';
-import User from './components/User';
+import Register from './components/Register/Register';
+import Login from './components/Login/Login';
+import User from './components/User/User';
 import './styles.css';
 
 const App: React.FC = () => {
