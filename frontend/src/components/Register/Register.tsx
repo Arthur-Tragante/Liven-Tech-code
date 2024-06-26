@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Register: React.FC = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -9,7 +10,7 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/register", {
+      const response = await axios.post(apiUrl + "/register", {
         name,
         email,
         password,

@@ -27,6 +27,7 @@ interface User {
 }
 
 const User: React.FC<UserProps> = ({ token }) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [user, setUser] = useState<User | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [name, setName] = useState<string>("");
@@ -43,7 +44,7 @@ const User: React.FC<UserProps> = ({ token }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user", {
+        const response = await axios.get(apiUrl + "/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,7 +65,7 @@ const User: React.FC<UserProps> = ({ token }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/user/address",
+        apiUrl + "/user/address",
         { country, city, street, number, complement, state, zipcode },
         {
           headers: {
@@ -97,7 +98,7 @@ const User: React.FC<UserProps> = ({ token }) => {
 
   const handleDeleteAddress = async (addressID: number) => {
     try {
-      await axios.delete(`http://localhost:8080/user/address/${addressID}`, {
+      await axios.delete(apiUrl + `/user/address/${addressID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -138,7 +139,7 @@ const User: React.FC<UserProps> = ({ token }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/user/address/${selectedAddress.address_id}`,
+        apiUrl + `/user/address/${selectedAddress.address_id}`,
         { country, city, street, number, complement, state, zipcode },
         {
           headers: {
@@ -177,7 +178,7 @@ const User: React.FC<UserProps> = ({ token }) => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:8080/user",
+        apiUrl + "/user",
         { name, email },
         {
           headers: {
@@ -204,7 +205,7 @@ const User: React.FC<UserProps> = ({ token }) => {
 
   const handleDeleteUser = async () => {
     try {
-      await axios.delete("http://localhost:8080/user", {
+      await axios.delete(apiUrl + "/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

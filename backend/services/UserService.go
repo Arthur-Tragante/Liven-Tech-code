@@ -17,13 +17,15 @@ type UserService struct {
 	JWTSecret string
 }
 
+// function to handle the registrations of the user
+
 func (s *UserService) Register(user *models.User) error {
+	// Using bcrypt to hash the password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println("Password hashing error:", err)
 		return err
 	}
-	fmt.Println("Generated Hash:", string(hashedPassword))
 	user.Password = string(hashedPassword)
 	return s.DB.Create(user).Error
 }
@@ -35,6 +37,7 @@ func (s *UserService) Login(email, password string) (string, error) {
 		return "", errors.New("invalid email or password")
 	}
 
+	// Comparing the password in database with the password received in the request
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
 		fmt.Println("Password comparison failed:", err)
@@ -72,6 +75,7 @@ func (s *UserService) UpdateUser(userID uint, updatedData *models.User) error {
 	user.Email = updatedData.Email
 
 	if updatedData.Password != "" {
+		// Same logic for previous password hashing
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(updatedData.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return err
